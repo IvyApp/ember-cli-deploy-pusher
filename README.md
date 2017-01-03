@@ -75,15 +75,18 @@ Note that, by default, this plugin does nothing. You must override any of the ab
 Example:
 
 ```javascript
+var RSVP = require('rsvp');
+
 ENV.pusher = {
   didActivate: function(/* context */) {
     return function(pusher) {
-      return pusher.trigger('my-channel', 'my-event', { abc: 123 });
+      var trigger = RSVP.denodeify(pusher.trigger.bind(pusher));
+      return trigger('my-channel', 'my-event', { some: 'data' });
     };
   }
 };
 ```
 
-The above triggers a `my-event` event in the `my-channel` channel, with a data payload of `{"abc": 123}` whenever the `deploy:activate` command completes successfully. Note that your hooks should return a function which takes a single argument, the Pusher client instance.
+The above triggers a `my-event` event in the `my-channel` channel, with a data payload of `{"some": "data"}` whenever the `deploy:activate` command completes successfully. Note that your hooks should return a function which takes a single argument, the Pusher client instance.
 
 [1]: http://ember-cli-deploy.com/docs/v0.6.x/plugins-overview/ "Plugin Documentation"
