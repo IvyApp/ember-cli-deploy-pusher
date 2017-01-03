@@ -1,4 +1,4 @@
-# ember-cli-deploy-pusher
+# ember-cli-deploy-pusher [![Build Status](https://travis-ci.org/IvyApp/ember-cli-deploy-pusher.svg?branch=master)](https://travis-ci.org/IvyApp/ember-cli-deploy-pusher)
 
 > An ember-cli-deploy plugin to notify [Pusher](https://pusher.com/) of successful hook executions in your deploy pipeline.
 
