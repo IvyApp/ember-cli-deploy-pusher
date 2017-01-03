@@ -1,27 +1,89 @@
 # ember-cli-deploy-pusher
 
-This README outlines the details of collaborating on this Ember addon.
+> An ember-cli-deploy plugin to notify [Pusher](https://pusher.com/) of successful hook executions in your deploy pipeline.
 
-## Installation
+## What is an ember-cli-deploy plugin?
 
-* `git clone <repository-url>` this repository
-* `cd ember-cli-deploy-pusher`
-* `npm install`
-* `bower install`
+A plugin is an addon that can be executed as a part of the ember-cli-deploy pipeline. A plugin will implement one or more of the ember-cli-deploy's pipeline hooks.
 
-## Running
+For more information on what plugins are and how they work, please refer to the [Plugin Documentation][1].
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+## Quick Start
 
-## Running Tests
+  * Install this plugin:
 
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+```sh
+$ ember install ember-cli-deploy-pusher
+```
 
-## Building
+  * Place the following configuration into `config/deploy.js`:
 
-* `ember build`
+```javascript
+ENV.pusher = {
+  appId: '<your pusher app id>',
+  key: '<your pusher key>',
+  secret: '<your pusher secret>'
+};
+```
 
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+  * Run the pipeline
+
+```sh
+ember deploy
+```
+
+Alternatively, you can pass in a `pusherClient` instance rather than specifying `appId`, `key`, and `secret`:
+
+```javascript
+var Pusher = require('pusher');
+
+ENV.pusher = {
+  pusherClient: new Pusher({ /* ... */ });
+};
+```
+
+## ember-cli-deploy Hooks Implemented
+
+For detailed information on what plugin hooks are and how they work, please refer to the [Plugin Documentation][1].
+
+  * `configure`
+
+The following hooks can be used for Pusher notifications:
+
+  * `willDeploy`
+  * `willDeploy`
+  * `willBuild`
+  * `build`
+  * `didBuild`
+  * `willPrepare`
+  * `prepare`
+  * `didPrepare`
+  * `willUpload`
+  * `upload`
+  * `didUpload`
+  * `willActivate`
+  * `activate`
+  * `didActivate`
+  * `didDeploy`
+  * `teardown`
+  * `fetchRevisions`
+  * `displayRevisions`
+  * `didFail`
+
+Note that, by default, this plugin does nothing. You must override any of the above hooks in your `config/deploy.js` file to actually send notifications.
+
+Example:
+
+```javascript
+ENV.pusher = {
+  didActivate: function(/* context */) {
+    return function(pusher) {
+      return pusher.trigger('my-channel', 'my-event', { abc: 123 });
+    };
+  }
+};
+```
+
+The above triggers a `my-event` event in the `my-channel` channel, with a data payload of `{"abc": 123}` whenever the `deploy:activate` command completes successfully. Note that your hooks should return a function which takes a single argument, the Pusher client instance.
+
+[1]: http://ember-cli-deploy.com/docs/v0.6.x/plugins-overview/ "Plugin Documentation"

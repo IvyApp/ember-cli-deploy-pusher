@@ -1,22 +1,22 @@
 {
   "name": "ember-cli-deploy-pusher",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "An ember-cli-deploy plugin to notify Pusher of successful hook executions in your deploy pipeline.",
   "keywords": [
     "ember-addon",
     "ember-cli-deploy-plugin"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Dray Lacy",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/IvyApp/ember-cli-deploy-pusher",
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "mocha node-tests/**/*-test.js"
   },
   "dependencies": {
     "ember-cli-babel": "^5.1.7",
@@ -44,7 +44,8 @@
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
     "ember-welcome-page": "^1.0.3",
-    "loader.js": "^4.0.10"
+    "loader.js": "^4.0.10",
+    "mocha": "^3.2.0"
   },
   "engines": {
     "node": ">= 0.12.0"
